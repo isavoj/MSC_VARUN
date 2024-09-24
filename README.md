@@ -6,7 +6,7 @@
 ---
 ### Literature and Code for Varun's Master Thesis Project
 
-Welcome to the repository for Varun's Master Thesis. This repository contains valuable literature and code relevant to Varun's work on solving Partial Differential Equations (PDEs) with a focus on Differential Quadrature Methods.
+Welcome to the repository for Varun's Master Thesis. This repository contains important literature and code related to Varun's research on solving Partial Differential Equations (PDEs) with a focus on B-splines. The purpose of this work is to compare his findings with the results of Isabella's network.
 
 ## Contents
 
