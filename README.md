@@ -8,7 +8,8 @@ Welcome to the repository for Varun's Master Thesis. This repository contains va
 
 - **Literature**: The `literature` folder contains various resources, papers, and notes that focus on Differential Quadrature and related numerical methods used throughout the project. This collection was essential in developing the code and understanding the methodologies.
 
-- **Code**: The code in this repository is developed based on the literature reviewed. It primarily uses Differential Quadrature with B-splines, inspired by the paper [*A Differential Quadrature Based on B-Splines for Solving Partial Differential Equations*](https://www.sciencedirect.com/science/article/pii/S2090447917301521). Additionally, it employs finite difference methods to solve the potential for the source term `sin(pi * x) * sin(pi * y)` and compares the numerical solution with the exact solution. The results of these comparisons can be seen in the figures below.
+- **Code**: The code in this repository is developed based on the literature reviewed. It primarily uses Differential Quadrature with B-splines, inspired by the paper [*A Differential Quadrature Based on B-Splines for Solving Partial Differential Equations*](https://www.sciencedirect.com/science/article/pii/S2090447917301521). Additionally, it employs finite difference methods.
+Both these cases solves the potential for an example source term `sin(pi * x) * sin(pi * y)` and compares the numerical solution with the exact solution. The results of these comparisons can be seen in the figures below.
 
 ## Recommended Reading about PDEs
 
