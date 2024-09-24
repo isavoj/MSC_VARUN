@@ -16,9 +16,7 @@ Welcome to the repository for Varun's Master Thesis. This repository contains im
 The DQ -code was inspired by the paper [*Solving 2D-Poisson equation using modified cubic B-spline differential quadrature method*](https://www.sciencedirect.com/science/article/pii/S2090447917301521). Additionally, I added finite difference methods.
 Both these cases solves the potential for an example source term `sin(pi * x) * sin(pi * y)` and compares the numerical solution with the exact solution. The results of these comparisons can be seen in the figures below.
 
-### DQ-Bsplines
 We consider the well-known two-dimensional Poisson equation:
-
 ```math
 \frac{\partial^2 z}{\partial x^2} + \frac{\partial^2 z}{\partial y^2} = f(x, y), \quad x, y \in [a, b]
 ```
@@ -71,10 +69,10 @@ which can be rewritten as:
 
 And then solved for. 
 
-Keep in min dthat in the DQ code attached here, I get the seocnd derivative immediately from the b_splines. It's the same thing. Just, not exactly the same methodology. 
-Then I use above equation to solve for the potential.
+> **_NOTE:_** 
+- In the provided DQ code, the second derivatives are directly obtained from the B-splines. Although the method differs slightly from the above formulation, the underlying principles remain consistent, and the equations are used to solve for the potential.
 
-I will add the other code soon. 
+- The code that demonstrates these methods will be added soon.
 
 
 
