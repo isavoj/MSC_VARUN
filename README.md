@@ -60,9 +60,9 @@ Below are the results comparing the numerical solution with the exact solution:
 
 ![Comparison](Figures/comp_lib_man.png)
 
-## DQD-Splines
 
-### Methods Description
+
+### DQ-Bsplines
 
 We consider the well-known two-dimensional Poisson equation:
 
@@ -83,5 +83,51 @@ U_{xx}(x_i) = \sum_{j=1}^{N} W^{(2)}_{i,j} U(x_j), \quad \text{for } i = 1, \ldo
 
 where $`W^{(1)}_{i,j}`$ and $`W^{(2)}_{i,j}`$ are the weighting coefficients of the first and second-order partial derivatives, respectively. 
 In this project, we use the modified cubic-B-spline method along with Shu's method for obtaining the weighting coefficients.
+
+
+Especially we have the B-spline basis function and its derivatives in the following relaion:
+
+```math
+w'_k(x_i) = \sum_{j=1}^{N} W^{(1)}_{i,j} w_k(x_j) \quad \text{for } i = 1, 2, \ldots, N; \, k = 1, 2, \ldots, N
+```
+
+To get the weighting coefficients of the second-order derivatives:
+
+```math
+W^{(2)}_{i,j} = 2W^{(1)}_{i,j} \cdot W^{(1)}_{i,i} - \frac{1}{x_i - x_j}, \quad \text{for } i, j = 1, \ldots, N; i \neq j
+```
+
+and
+
+```math
+W^{(2)}_{i,i} = - \sum_{j=1, j \neq i}^{N} W^{(2)}_{i,j}
+```
+
+
+The differential quadrature method is applied which leads to a set of DQ algebraic equations as follows:
+
+```math
+\sum_{k=1}^{N} W^{(2)}_{i,k} Z_{k,j} + \sum_{k=1}^{M} W^{(2)}_{j,k} Z_{i,k} = f(x, y) \quad (17)
+```
+
+which can be rewritten as:
+
+```math
+\sum_{k=2}^{N-1} W^{(2)}_{i,k} Z_{k,j} + \sum_{k=2}^{M-1} W^{(2)}_{j,k} Z_{i,k} = f(x_i, y_j) - W_{i,1} Z_{1,j} - W_{i,N} Z_{N,j} - W_{j,1} Z_{i,1} - W_{j,M} Z_{i,M} \quad (18)
+```
+
+And then solved for. 
+
+Keep in min dthat in the DQ code attached here, I get the seocnd derivative immediately from the b_splines. It's the same thing. Just, not exactly the same methodology. 
+Then I use above equation to solve for the potential.
+
+I will add the other code soon. 
+
+
+
+
+
+
+
 
 
