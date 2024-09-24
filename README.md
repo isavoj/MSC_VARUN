@@ -81,72 +81,7 @@ U_x(x_i) = \sum_{j=1}^{N} W^{(1)}_{i,j} U(x_j), \quad \text{for } i = 1, \ldots,
 U_{xx}(x_i) = \sum_{j=1}^{N} W^{(2)}_{i,j} U(x_j), \quad \text{for } i = 1, \ldots, N
 ```
 
-where $W^{(1)}_{i,j}\) and \(W^{(2)}_{i,j}$ are the weighting coefficients of the first and second-order partial derivatives, respectively. The weighting coefficients for \(N\) discrete knots \((x_1, x_2, \ldots, x_N)\) can be calculated using different methods. In this project, we use the modified cubic-B-spline method along with Shu's method for obtaining the weighting coefficients.
+where $`W^{(1)}_{i,j}`$ and $`W^{(2)}_{i,j}`$ are the weighting coefficients of the first and second-order partial derivatives, respectively. 
+In this project, we use the modified cubic-B-spline method along with Shu's method for obtaining the weighting coefficients.
 
-#### Modified Cubic B-Spline Differential Quadrature Method
-
-In spline-based differential quadrature, we use uniform discretization: \(x_1 < x_2 < \ldots < x_n\) such that \(x_{i+1} - x_i = h\). The basis functions of the Cubic B-Spline DQ are:
-
-\[
-W_j(x) = 
-\begin{cases} 
-\frac{1}{h^3} (x - x_{j-2})^3, & x \in (x_{j-2}, x_{j-1}) \\
-\frac{1}{h^3} (x - x_{j-2})^3 - 4 (x - x_{j-1})^3, & x \in (x_{j-1}, x_j) \\
-\frac{1}{h^3} (x_{j+2} - x)^3 - 4 (x_{j+1} - x)^3, & x \in (x_j, x_{j+1}) \\
-\frac{1}{h^3} (x_{j+2} - x)^3, & x \in (x_{j+1}, x_{j+2}) \\
-0, & \text{Otherwise}
-\end{cases}
-\]
-
-where \(\{W_0, W_1, \ldots, W_{N+1}\}\) are the basis on the region \([a,b]\). Modifications to the cubic B-spline basis functions for problems with Dirichlet boundary conditions can result in a diagonally dominant system of equations, as proposed by Mittal and Jain. The modified basis functions are:
-
-\[
-\begin{aligned}
-w_1(x) &= W_1(x) + 2W_0(x), \\
-w_2(x) &= W_2(x) - W_0(x), \\
-w_j(x) &= W_j(x) \quad \text{for } j = 3, \ldots, N-2, \\
-w_{N-1}(x) &= W_{N-1}(x) - W_{N+1}(x), \\
-w_N(x) &= W_N(x) + 2W_{N+1}(x).
-\end{aligned}
-\]
-
-The derivatives of the modified basis functions are used to compute the weighting coefficients. The weighting coefficients for the first derivatives are calculated using the following system:
-
-\[
-\begin{bmatrix}
-6 & 1 & & & & & \\
-1 & 4 & \ldots & & & & \\
-& \ldots & & & 1 & 4 & 1 \\
-& & & & 1 & 6
-\end{bmatrix}
-\begin{bmatrix}
-W^{(1)}_{i,1} \\
-W^{(1)}_{i,2} \\
-W^{(1)}_{i,3} \\
-\vdots \\
-W^{(1)}_{i,N}
-\end{bmatrix}
-=
-\begin{bmatrix}
-w'_1(x_i) \\
-w'_2(x_i) \\
-w'_3(x_i) \\
-\vdots \\
-w'_N(x_i)
-\end{bmatrix}
-\]
-
-To get the weighting coefficients of the second-order derivatives:
-
-\[
-W^{(2)}_{i,j} = 2W^{(1)}_{i,j} \cdot W^{(1)}_{i,i} - \frac{1}{x_i - x_j}, \quad \text{for } i, j = 1, \ldots, N; i \neq j
-\]
-
-and
-
-\[
-W^{(2)}_{i,i} = - \sum_{j=1, j \neq i}^{N} W^{(2)}_{i,j}
-\]
-
-This approach provides a robust way to compute accurate weighting coefficients for solving PDEs using modified spline-based differential quadrature methods.
 
