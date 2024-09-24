@@ -16,63 +16,66 @@ Welcome to the repository for Varun's Master Thesis. This repository contains im
 The DQ -code was inspired by the paper [*Solving 2D-Poisson equation using modified cubic B-spline differential quadrature method*](https://www.sciencedirect.com/science/article/pii/S2090447917301521). Additionally, I added finite difference methods.
 Both these cases solves the potential for an example source term `sin(pi * x) * sin(pi * y)` and compares the numerical solution with the exact solution. The results of these comparisons can be seen in the figures below.
 
-We consider the well-known two-dimensional Poisson equation:
-```math
-\frac{\partial^2 z}{\partial x^2} + \frac{\partial^2 z}{\partial y^2} = f(x, y) = sin(pi * x) * sin(pi * y), \quad x, y \in [a, b]
-```
-
-under Dirichlet and mixed boundary conditions. The Differential Quadrature (DQ) method approximates the spatial partial derivatives in the PDE by a sum of weights multiplied by the function values at discrete knots over the domain \([a, b]\). The first and second-order partial derivatives with respect to \(x\) over domain \([a, b]\) are defined as:
-
-```math
-U_x(x_i) = \sum_{j=1}^{N} W^{(1)}_{i,j} U(x_j), \quad \text{for } i = 1, \ldots, N
-```
-
-
-```math
-U_{xx}(x_i) = \sum_{j=1}^{N} W^{(2)}_{i,j} U(x_j), \quad \text{for } i = 1, \ldots, N
-```
-
-where $`W^{(1)}_{i,j}`$ and $`W^{(2)}_{i,j}`$ are the weighting coefficients of the first and second-order partial derivatives, respectively. 
-In this project, we use the modified cubic-B-spline method along with Shu's method for obtaining the weighting coefficients.
-
-
-Especially we have the B-spline basis functions $`\psi_k(x_i)`$  and its derivatives in the following relaion:
-
-```math
-\psi'_k(x_i) = \sum_{j=1}^{N} W^{(1)}_{i,j} \psi_k(x_j) \quad \text{for } i = 1, 2, \ldots, N; \, k = 1, 2, \ldots, N
-```
-
-To get the weighting coefficients of the second-order derivatives:
-
-```math
-W^{(2)}_{i,j} = 2W^{(1)}_{i,j} \cdot W^{(1)}_{i,i} - \frac{1}{x_i - x_j}, \quad \text{for } i, j = 1, \ldots, N; i \neq j
-```
-
-and
-
-```math
-W^{(2)}_{i,i} = - \sum_{j=1, j \neq i}^{N} W^{(2)}_{i,j}
-```
-
-
-The differential quadrature method is applied which leads to a set of DQ algebraic equations as follows:
-
-```math
-\sum_{k=1}^{N} W^{(2)}_{i,k} Z_{k,j} + \sum_{k=1}^{M} W^{(2)}_{j,k} Z_{i,k} = f(x, y)
-```
-
-which can be rewritten as:
-
-```math
-\sum_{k=2}^{N-1} W^{(2)}_{i,k} Z_{k,j} + \sum_{k=2}^{M-1} W^{(2)}_{j,k} Z_{i,k} = f(x_i, y_j) - W_{i,1} Z_{1,j} - W_{i,N} Z_{N,j} - W_{j,1} Z_{i,1} - W_{j,M} Z_{i,M}
-```
-
-And then solved for. 
-
+> ### Some info about the DQ code 
+> 
+> We consider the well-known two-dimensional Poisson equation:
+> 
+> ```math
+> \frac{\partial^2 z}{\partial x^2} + \frac{\partial^2 z}{\partial y^2} = f(x, y) = sin(pi * x) * sin(pi * y), \quad x, y \in [a, b]
+> ```
+> 
+> under Dirichlet and mixed boundary conditions. The Differential Quadrature (DQ) method approximates the spatial partial derivatives in the PDE by a sum of weights multiplied by the function values at discrete knots over the domain \([a, b]\). The first and second-> > > order partial derivatives with respect to \(x\) over domain \([a, b]\) are defined as:
+> 
+> ```math
+> U_x(x_i) = \sum_{j=1}^{N} W^{(1)}_{i,j} U(x_j), \quad \text{for } i = 1, \ldots, N
+> ```
+> 
+> 
+> ```math
+> U_{xx}(x_i) = \sum_{j=1}^{N} W^{(2)}_{i,j} U(x_j), \quad \text{for } i = 1, \ldots, N
+> ```
+> 
+> where $`W^{(1)}_{i,j}`$ and $`W^{(2)}_{i,j}`$ are the weighting coefficients of the first and second-order partial derivatives, respectively. 
+> In this project, we use the modified cubic-B-spline method along with Shu's method for obtaining the weighting coefficients.
+> 
+> 
+> Especially we have the B-spline basis functions $`\psi_k(x_i)`$  and its derivatives in the following relaion:
+> 
+> ```math
+> \psi'_k(x_i) = \sum_{j=1}^{N} W^{(1)}_{i,j} \psi_k(x_j) \quad \text{for } i = 1, 2, \ldots, N; \, k = 1, 2, \ldots, N
+> ```
+> 
+> To get the weighting coefficients of the second-order derivatives:
+> 
+> ```math
+> W^{(2)}_{i,j} = 2W^{(1)}_{i,j} \cdot W^{(1)}_{i,i} - \frac{1}{x_i - x_j}, \quad \text{for } i, j = 1, \ldots, N; i \neq j
+> ```
+> 
+> and
+> 
+> ```math
+> W^{(2)}_{i,i} = - \sum_{j=1, j \neq i}^{N} W^{(2)}_{i,j}
+> ```
+> 
+> 
+> The differential quadrature method is applied which leads to a set of DQ algebraic equations as follows:
+> 
+> ```math
+> \sum_{k=1}^{N} W^{(2)}_{i,k} Z_{k,j} + \sum_{k=1}^{M} W^{(2)}_{j,k} Z_{i,k} = f(x, y)
+> ```
+> 
+> which can be rewritten as:
+> 
+> ```math
+> \sum_{k=2}^{N-1} W^{(2)}_{i,k} Z_{k,j} + \sum_{k=2}^{M-1} W^{(2)}_{j,k} Z_{i,k} = f(x_i, y_j) - W_{i,1} Z_{1,j} - W_{i,N} Z_{N,j} - W_{j,1} Z_{i,1} - W_{j,M} Z_{i,M}
+> ```
+> 
+> And then solved for. 
+> 
 > **_NOTE:_** 
-- In the provided DQ code, the second derivatives are directly obtained from the B-splines. Although the method differs slightly from the above formulation, the underlying principles remain consistent, and the equations are used to solve for the potential.
-
-- The code that demonstrates these methods will be added soon.
+> - In the provided DQ code, the second derivatives are directly obtained from the B-splines. Although the method differs slightly from the above formulation, the underlying principles remain consistent, and the equations are used to solve for the potential.
+> 
+> - The code that demonstrates these methods will be added soon.
 
 
 
