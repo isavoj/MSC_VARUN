@@ -22,7 +22,7 @@ Additionally, this GitHub repository contains course materials for **Fast Method
 - **[MIT 18.336 - Fast Methods for Partial Differential and Integral Equations](https://github.com/mitmath/18336/tree/master)**  
   This resource originally hosted course material that covered fast computational methods for solving PDEs and integral equations, including valuable insights on spectral methods and other efficient techniques.
 
-- **Code**: The code in this repository is developed based on the literature reviewed. It primarily uses Differential Quadrature with B-splines, inspired by the paper [*A Differential Quadrature Based on B-Splines for Solving Partial Differential Equations*](https://www.sciencedirect.com/science/article/pii/S2090447917301521). Additionally, it employs finite difference methods to solve the potential for the source term `sin(pi * x) * sin(pi * y)` and compares the numerical solution with the exact solution. The results of these comparisons can be seen in the figures below.
+## Recommended Reading about B-splines
 
 ### Results
 
