@@ -47,31 +47,26 @@ u = spsolve(A, b)
 # Reshape the solution vector back to a 2D grid of interior points
 u = u.reshape((N, N))
 
-# Combine the interior solution with Dirichlet boundary values for plotting
+# Combine the interior solution with Dirichlet boundary values
 U = np.vstack([
     np.ones((1, N + 2)) * u0_b,
     np.hstack([np.ones((N, 1)) * u0_l, u, np.ones((N, 1)) * u0_r]),
     np.ones((1, N + 2)) * u0_t
 ])
 
-# Plot the solution
 fig, ax = plt.subplots(figsize=(8, 6))
 
 X_plot, Y_plot = np.meshgrid(np.linspace(0, 1, N + 2), np.linspace(0, 1, N + 2))
 
-# Plot the solution using pcolor
 c = ax.pcolor(X_plot, Y_plot, U, cmap='RdBu_r', shading='auto')
 cb = plt.colorbar(c, ax=ax)
 
-# Define the exact solution and source function
 def exact_solution(x, y):
     return -(1 / (2 * np.pi ** 2)) * np.sin(np.pi * x) * np.sin(np.pi * y)
 
 
-# Calculate the exact solution for comparison
 exact = np.array([[exact_solution(xi, yi) for yi in y] for xi in x])
 
-# Plot the numerical solution
 plt.figure(figsize=(10, 5))
 plt.subplot(1, 2, 1)
 plt.contourf(X_plot, Y_plot, U, cmap='viridis')
@@ -80,7 +75,6 @@ plt.title('Finite Differences')
 plt.xlabel('x')
 plt.ylabel('y')
 
-# Plot the exact solution
 plt.subplot(1, 2, 2)
 plt.contourf(x, y, exact, cmap='viridis')
 plt.colorbar(label='Exact Solution')
