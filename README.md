@@ -10,7 +10,7 @@ Welcome to the repository for Varun's Master Thesis. This repository contains va
 
 - **Code**: The code provided in this repository is implemented based on the literature studied. It includes implementations of various numerical methods, particularly Differential Quadrature, for solving PDEs in a computationally efficient manner.
 
-## Recommended Reading
+## Recommended Reading about PDEs
 
 For a comprehensive summary of solving PDEs in the electrostatic case, I highly recommend the following resource:
 
