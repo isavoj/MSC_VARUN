@@ -72,15 +72,16 @@ We consider the well-known two-dimensional Poisson equation:
 
 under Dirichlet and mixed boundary conditions. The Differential Quadrature (DQ) method approximates the spatial partial derivatives in the PDE by a sum of weights multiplied by the function values at discrete knots over the domain \([a, b]\). The first and second-order partial derivatives with respect to \(x\) over domain \([a, b]\) are defined as:
 
-\[
+```math
 U_x(x_i) = \sum_{j=1}^{N} W^{(1)}_{i,j} U(x_j), \quad \text{for } i = 1, \ldots, N
-\]
+```
 
-\[
+
+```math
 U_{xx}(x_i) = \sum_{j=1}^{N} W^{(2)}_{i,j} U(x_j), \quad \text{for } i = 1, \ldots, N
-\]
+```
 
-where \(W^{(1)}_{i,j}\) and \(W^{(2)}_{i,j}\) are the weighting coefficients of the first and second-order partial derivatives, respectively. The weighting coefficients for \(N\) discrete knots \((x_1, x_2, \ldots, x_N)\) can be calculated using different methods. In this project, we use the modified cubic-B-spline method along with Shu's method for obtaining the weighting coefficients.
+where $W^{(1)}_{i,j}\) and \(W^{(2)}_{i,j}$ are the weighting coefficients of the first and second-order partial derivatives, respectively. The weighting coefficients for \(N\) discrete knots \((x_1, x_2, \ldots, x_N)\) can be calculated using different methods. In this project, we use the modified cubic-B-spline method along with Shu's method for obtaining the weighting coefficients.
 
 #### Modified Cubic B-Spline Differential Quadrature Method
 
