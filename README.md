@@ -29,7 +29,7 @@ Additionally, this GitHub repository contains course materials for **Fast Method
 
 ## Recommended Reading on B-Splines
 
-For an excellent review of B-splines and their properties, I recommend the materials provided by the University of Oslo. The following chapters were particularly useful:
+For a review of B-splines and their properties, I recommend the materials provided by the University of Oslo. The following chapters were particularly useful:
 
 - **[Chapter 1: Introduction to B-Splines](https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT5340/v07/undervisningsmateriale/kap1.pdf)**: This chapter provides a foundational understanding of B-splines, including basic definitions and concepts.
 - **[Chapter 3: Properties of B-Splines](https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT5340/v07/undervisningsmateriale/kap3.pdf)**: This chapter covers the detailed properties of B-splines, which were extensively used in this project.
