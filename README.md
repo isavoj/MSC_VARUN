@@ -12,7 +12,8 @@ Welcome to the repository for Varun's Master Thesis. This repository contains im
 
 - **Literature**: The `literature` folder contains various resources, papers, and notes that focus on Differential Quadrature and related numerical methods used throughout the project. This collection was essential in developing the code and understanding the methodologies.
 
-- **Code**: The code in this repository is developed based on the literature reviewed. It primarily uses Differential Quadrature with B-splines, inspired by the paper [*Solving 2D-Poisson equation using modified cubic B-spline differential quadrature method*](https://www.sciencedirect.com/science/article/pii/S2090447917301521). Additionally, it employs finite difference methods.
+- **Code**: The code in this repository is developed based on the literature reviewed. However, these are  just very simple examples i added.
+The DQ -code was inspired by the paper [*Solving 2D-Poisson equation using modified cubic B-spline differential quadrature method*](https://www.sciencedirect.com/science/article/pii/S2090447917301521). Additionally, I added finite difference methods.
 Both these cases solves the potential for an example source term `sin(pi * x) * sin(pi * y)` and compares the numerical solution with the exact solution. The results of these comparisons can be seen in the figures below.
 
 ## Recommended Reading about PDEs
