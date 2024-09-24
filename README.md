@@ -30,11 +30,14 @@ Below are the results comparing the numerical solution with the exact solution:
 
 **Figure 1: Using B-Spline DQM (code/DQM/using_B_splines.py)**
 
-![Numerical Solution](images/numerical_solution.png)
+![B-splines](Figures/B_spline_DQ.png)
 
-**Figure 2: UsingFinite-Differences (code/finite_differences/simple_solution.py)**
+**Figure 2: Using Finite-Differences (code/finite_differences/simple_solution.py)**
 
-![Exact Solution](images/exact_solution.png)
+![Finite-Differences](Figures/fin_dir.png)
 
+**Figure 3: Comparison between Library SciPy and Manual implementation (code/B_splines/comparison_lib_man.py)**
+
+![Comparison](Figures/comp_lib_man.png)
 
 
