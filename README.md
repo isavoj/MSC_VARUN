@@ -18,7 +18,7 @@ Both these cases solves the potential for an example source term `sin(pi * x) * 
 
 We consider the well-known two-dimensional Poisson equation:
 ```math
-\frac{\partial^2 z}{\partial x^2} + \frac{\partial^2 z}{\partial y^2} = f(x, y), \quad x, y \in [a, b]
+\frac{\partial^2 z}{\partial x^2} + \frac{\partial^2 z}{\partial y^2} = f(x, y) = sin(pi * x) * sin(pi * y), \quad x, y \in [a, b]
 ```
 
 under Dirichlet and mixed boundary conditions. The Differential Quadrature (DQ) method approximates the spatial partial derivatives in the PDE by a sum of weights multiplied by the function values at discrete knots over the domain \([a, b]\). The first and second-order partial derivatives with respect to \(x\) over domain \([a, b]\) are defined as:
