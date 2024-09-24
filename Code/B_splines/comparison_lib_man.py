@@ -4,6 +4,7 @@ from scipy.interpolate import BSpline, make_interp_spline
 
 # This script compares the B-spline basis function and its first and second derivatives
 # between a manually implemented method and the SciPy library to validate the manual implementation.
+# OBS- it turned out that my manual knot vector wasn't correct so I simply use the one from SciPy
 
 def b_spline_basis(x, i, k, t):
     """
