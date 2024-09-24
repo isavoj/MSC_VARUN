@@ -1,5 +1,9 @@
 # MSC_VARUN
+---
 
+:warning: **Warning:** This project is currently under development. Additional information and updates will be added continuously. Stay tuned!
+
+---
 ### Literature and Code for Varun's Master Thesis Project
 
 Welcome to the repository for Varun's Master Thesis. This repository contains valuable literature and code relevant to Varun's work on solving Partial Differential Equations (PDEs) with a focus on Differential Quadrature Methods.
