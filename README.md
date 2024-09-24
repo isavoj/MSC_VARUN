@@ -36,10 +36,10 @@ where $`W^{(1)}_{i,j}`$ and $`W^{(2)}_{i,j}`$ are the weighting coefficients of 
 In this project, we use the modified cubic-B-spline method along with Shu's method for obtaining the weighting coefficients.
 
 
-Especially we have the B-spline basis function and its derivatives in the following relaion:
+Especially we have the B-spline basis functions $`\psi_k(x_i)`$  and its derivatives in the following relaion:
 
 ```math
-w'_k(x_i) = \sum_{j=1}^{N} W^{(1)}_{i,j} w_k(x_j) \quad \text{for } i = 1, 2, \ldots, N; \, k = 1, 2, \ldots, N
+\psi'_k(x_i) = \sum_{j=1}^{N} W^{(1)}_{i,j} \psi_k(x_j) \quad \text{for } i = 1, 2, \ldots, N; \, k = 1, 2, \ldots, N
 ```
 
 To get the weighting coefficients of the second-order derivatives:
