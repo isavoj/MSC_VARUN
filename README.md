@@ -22,7 +22,22 @@ Additionally, this GitHub repository contains course materials for **Fast Method
 - **[MIT 18.336 - Fast Methods for Partial Differential and Integral Equations](https://github.com/mitmath/18336/tree/master)**  
   This resource originally hosted course material that covered fast computational methods for solving PDEs and integral equations, including valuable insights on spectral methods and other efficient techniques.
 
-## Recommended Reading about B-splines
+## Recommended Reading on B-Splines
+
+For an excellent review of B-splines and their properties, I recommend the materials provided by the University of Oslo. The following chapters were particularly useful:
+
+- **[Chapter 1: Introduction to B-Splines](https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT5340/v07/undervisningsmateriale/kap1.pdf)**: This chapter provides a foundational understanding of B-splines, including basic definitions and concepts.
+- **[Chapter 3: Properties of B-Splines](https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF-MAT5340/v07/undervisningsmateriale/kap3.pdf)**: This chapter covers the detailed properties of B-splines, which were extensively used in this project.
+
+These resources offer comprehensive insights into B-splines, which were necessary in the development and understanding of the code in this repository.
+
+
+## Additional Numerical Methods for PDE-Solving
+
+For further exploration of numerical methods that can be discussed in the thesis, I introduce some documents here:
+
+- **[Implementing FFTs in Practice](https://www.csd.uwo.ca/~mmorenom/CS433-CS9624/Resources/Implementing_FFTs_in_Practice.pdf)**: This document offers valuable insights into the practical aspects of FFTs.
+
 
 ### Results
 
