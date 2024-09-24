@@ -2,7 +2,7 @@
 Literature and code for Varuns Master Thesis Project.
 
 This site contains literature and code relevant for Varuns master thesis. 
-In the literature folder there are different examples 
+In the literature folder you can find a lot of material about Differential Quadrature. And it's what I used to write the code. 
 
 Genreal about solving PDES in computational effcients ways:
 I recomend this for a summary of how to solve PDEs in the electrostatic case:
