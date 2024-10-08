@@ -131,6 +131,10 @@ We can compare it with the solution that KAN-neural network learns.
 Knowing the solution of the function, we can also fix the activation functions.
 ![easier](Figures/easier.PNG)
 
+Here is the structure
+![easier](Figures/KAN_PDE.PNG)
+
+
 
 
 
