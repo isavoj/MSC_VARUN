@@ -124,6 +124,13 @@ Below are the results comparing the numerical solution with the exact solution:
 ![Comparison](Figures/comp_lib_man.png)
 
 
+By solving, for example the following problem using DQ-Spline method
+![solution](Figures/SOLV_41.png)
+
+We can compare it with the solution that KAN-neural network learns. 
+Knowing the solution of the function, we can also fix the activation functions.
+![solution](Figures/SOLV_41.png)
+
 
 
 
