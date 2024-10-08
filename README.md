@@ -134,6 +134,13 @@ Knowing the solution of the function, we can also fix the activation functions.
 Here is the structure
 ![easier](Figures/KAN_PDE.PNG)
 
+| Input (x, y)            | Prediction   | Actual      | Difference    |
+|-------------------------|--------------|-------------|---------------|
+| (0.5, 0.5)              | 0.999616     | 1.0         | -0.000383     |
+| (0.3, 0.7)              | 0.654078     | 0.654508    | -0.000430     |
+| (0.1, 0.9)              | 0.095303     | 0.095492    | -0.000188     |
+| **MSE**                 |              |             |  1.227723e-07 |
+
 
 
 
