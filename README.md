@@ -16,6 +16,13 @@ Welcome to the repository for Varun's Master Thesis. This repository contains im
 The DQ -code was inspired by the paper [*Solving 2D-Poisson equation using modified cubic B-spline differential quadrature method*](https://www.sciencedirect.com/science/article/pii/S2090447917301521). Additionally, I added finite difference methods.
 Both these cases solves the potential for an example source term `sin(pi * x) * sin(pi * y)` and compares the numerical solution with the exact solution. The results of these comparisons can be seen in the figures below.
 
+
+### Background about the method
+
+**Figure 3: Comparison between Library SciPy and Manual implementation (code/B_splines/comparison_lib_man.py)**
+
+![Comparison](Figures/grid_DQ.png)
+
 > ### Some info about the DQ code 
 > 
 > We consider the well-known two-dimensional Poisson equation:
