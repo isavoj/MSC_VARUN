@@ -25,8 +25,8 @@ Both these cases solves the potential for an example source term `sin(pi * x) * 
 <img src="Figures/grid_DQ.PNG" alt="Comparison" width="300"/>
 
 As shown in above Figure, the DQ approximates the derivative
-of a function with respect to `x` at a mesh point \((x_i, y_j)\) (represented by the dark circle) by
-all the functional values along the mesh line of \(y = y_j\) (represented by the white circle),
+of a function with respect to `x` at a mesh point $`(x_i, y_j)$` (represented by the dark circle) by
+all the functional values along the mesh line of $`(y = y_j)$` (represented by the white circle),
 and the derivative of the function with respect to `y` by all the functional values along the
 mesh line of \(x = x_i\) (represented by the white square).
 
