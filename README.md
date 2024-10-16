@@ -17,18 +17,43 @@ The DQ -code was inspired by the paper [*Solving 2D-Poisson equation using modif
 Both these cases solves the potential for an example source term `sin(pi * x) * sin(pi * y)` and compares the numerical solution with the exact solution. The results of these comparisons can be seen in the figures below.
 
 
-### Background about the method
+## Background about the method
+
 
 **Figure 3: Comparison between Library SciPy and Manual implementation (code/B_splines/comparison_lib_man.py)**
 
 
 <img src="Figures/grid_DQ.PNG" alt="Comparison" width="300"/>
 
+## DQ- method and comparison finite difference
+
 As shown in above Figure, the DQ approximates the derivative
-of a function with respect to `x` at a mesh point $`(x_i, y_j)$` (represented by the dark circle) by
-all the functional values along the mesh line of $`(y = y_j)$` (represented by the white circle),
+of a function with respect to `x` at a mesh point $`x_i, y_j`$ (represented by the dark circle) by
+all the functional values along the mesh line of $`y = y_j`$  (represented by the white circle),
 and the derivative of the function with respect to `y` by all the functional values along the
-mesh line of \(x = x_i\) (represented by the white square).
+mesh line of  $`x = x_i`$ (represented by the white square).
+
+Mathematically, the DQ approximation of the $`n`$-th order derivative with respect to $`x`$, $`f_x^{(n)}`$, and the $`m`$-th order derivative with respect to $`y`$, $`f_y^{(m)}`$, at $`(x_i, y_j)`$ can be written as:
+
+$`f_x^{(n)}(x_i, y_j) = \sum_{k=1}^{N} w_i^{(n)}(x_k, y_j) f(x_k, y_j)`$  (3.6a)
+
+$`f_y^{(m)}(x_i, y_j) = \sum_{k=1}^{M} w_j^{(m)}(x_i, y_k) f(x_i, y_k)`$  (3.6b)
+
+where $`N`$ and $`M`$ are, respectively, the number of mesh points in the $`x`$ and $`y`$ directions, $`w_i^{(n)}`$ and $`w_j^{(m)}`$ are the DQ weighting coefficients in the $`x`$ and $`y`$ directions.
+
+
+The statement that the **Differential Quadrature (DQ) method** can obtain "very accurate results by using a considerably small number of mesh points" is based on the global nature of the method, which allows it to approximate derivatives using all available data points, unlike local methods such as finite difference or finite element methods. Here’s why:
+
+### 1. Global Nature of DQ Method:
+- **Global Method**: The DQ method is global because, for the approximation of a derivative at any given point, it uses the functional values at all mesh points in the domain, rather than just the values at nearby or adjacent points (which is common in local methods like finite difference).
+- In the DQ method, each point is influenced by every other point in the mesh. This means that every point in the grid is involved in every derivative calculation, which can lead to very accurate solutions, even with fewer grid points, because the global influence provides a more comprehensive approximation.
+
+
+## DQ-Spline method and comparison finite element
+
+As shown by Shu (2000), $`w_i^{(n)}`$ depends on the approximation of the one-dimensional function $`f(x_j, y)`$ (with $`x`$ as the variable), while $`w_j^{(m)}`$ depends on the approximation of the one-dimensional function $`f(x, y_i)`$ (with $`y`$ as the variable).
+
+When $`f(x_j, y)`$ or $`f(x, y_i)`$ is approximated by a high-order polynomial, Shu and Richards (1992) derived a simple algebraic formulation and a recurrence relationship to compute $`w_i^{(n)}`$ and $`w_j^{(m)}`$. When the function is approximated by a Fourier series expansion, Shu and Chew (1997) also derived simple algebraic formulations to compute the weighting coefficients of the first and second-order derivatives.
 
 
 > ### Some info about the DQ code 
