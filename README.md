@@ -35,11 +35,44 @@ mesh line of  $`x = x_i`$ (represented by the white square).
 
 Mathematically, the DQ approximation of the $`n`$-th order derivative with respect to $`x`$, $`f_x^{(n)}`$, and the $`m`$-th order derivative with respect to $`y`$, $`f_y^{(m)}`$, at $`(x_i, y_j)`$ can be written as:
 
-$`f_x^{(n)}(x_i, y_j) = \sum_{k=1}^{N} w_i^{(n)}(x_k, y_j) f(x_k, y_j)`$  (3.6a)
-
-$`f_y^{(m)}(x_i, y_j) = \sum_{k=1}^{M} w_j^{(m)}(x_i, y_k) f(x_i, y_k)`$  (3.6b)
+$`f_x^{(n)}(x_i, y_j) = \sum_{k=1}^{N} w_i^{(n)}(x_k, y_j) f(x_k, y_j)`$  
+$`f_y^{(m)}(x_i, y_j) = \sum_{k=1}^{M} w_j^{(m)}(x_i, y_k) f(x_i, y_k)`$  
 
 where $`N`$ and $`M`$ are, respectively, the number of mesh points in the $`x`$ and $`y`$ directions, $`w_i^{(n)}`$ and $`w_j^{(m)}`$ are the DQ weighting coefficients in the $`x`$ and $`y`$ directions.
+
+For second derivative n=m=2 we combine the derivative matrices in both directions using the Kronecker product to form the Laplacian matrix:
+
+\[
+\text{Laplacian} = I \otimes D_x^2 + D_y^2 \otimes I
+\]
+
+where \(I\) is the identity matrix and \(\otimes\) denotes the Kronecker product.
+
+### Imposing Boundary Conditions
+
+To enforce Dirichlet boundary conditions (i.e., \(u = 0\) on the boundary), we modify the Laplacian matrix and the source term \(f(x, y)\). Specifically, we set the rows of the Laplacian matrix corresponding to boundary points to enforce the boundary condition:
+
+```math
+\text{Laplacian}[i, :] = 0 \quad \text{for all boundary indices} \, i
+
+\text{Laplacian}[i, i] = 1
+
+f[i] = 0
+ ```
+
+This ensures that the solution \(u(x, y)\) is zero at the boundary points.
+
+### Solving the System of Equations
+
+Once the Laplacian matrix is constructed and the boundary conditions are applied, we solve the system of linear equations:
+
+\[
+\text{Laplacian} \cdot U = f
+\]
+
+where \(U\) is the vector of unknowns (the values of \(u(x, y)\) at the grid points), and \(f\) is the source term of the PDE (in this case, the right-hand side of the Poisson equation).
+
+The system is solved using standard linear algebra techniques, such as LU decomposition or sparse solvers, since the Laplacian matrix is often sparse.
 
 
 The statement that the **Differential Quadrature (DQ) method** can obtain "very accurate results by using a considerably small number of mesh points" is based on the global nature of the method, which allows it to approximate derivatives using all available data points, unlike local methods such as finite difference or finite element methods. Here’s why:
@@ -99,12 +132,12 @@ This relationship helps in indexing the mesh points more efficiently when constr
 ### Derivative Approximation with B-Splines:
 
 For B-splines, the approximation of the **m-th order derivative** with respect to `x` and the **n-th order derivative** with respect to `y` at a mesh point `(x_k, y_k)` is computed using the local support of the B-splines. 
-Since B-splines only influence a small number of nearby points, the sum in the DQ approximation is restricted to the points within the **local support region**. The derivaties will have 0 value outside the neighboruing points. FOr ahigher degree of th espline there will be more poitns thta influence. 
+Since B-splines only influence a small number of nearby points, the sum in the DQ approximation is restricted to the points within the **local support region**. The derivaties will have 0 value outside the neighboruing points. For a higher degree of the spline there will be more poitns that influence. 
 So depending on the order of your splines you can choose how many bumber fo poitns that will be influenced. 
 
 The **m-th order derivative** with respect to `x` using B-splines is approximated as:
 > ```math
-> f_x^{(m)}(x_k, y_k) = \sum_{i=1}^{M_{\text{local}} \times N_{\text{local}}} w_i^{(m)} f(x, y_i)
+> f_x^{(m)}(x_k, y_k) = \sum_{i=1}^{M \times N} w_i^{(m)} f(x, y_i)
 > ```
 Similarly, the **n-th order derivative** with respect to `y` using B-splines is approximated as:
 
@@ -129,24 +162,20 @@ In this project, we use the **modified cubic-B-spline method** along with **Shu'
 > \psi'_k(x_i) = \sum_{j=1}^{N} W_{i,j}^{(1)} \psi_k(x_j), \quad \text{for } i = 1, 2, \dots, N; \, k = 1, 2, \dots, N
 > ```
 
-
 To get the weighting coefficients, we follow the DQ method for deriving the appropriate sparse matrices for second derivatives, ensuring a computationally efficient implementation.
 
 
+In the matrix form, the weighting coefficient matrix of the x-derivative can then be determined by:
 
-### Structured Grid Example:
+```math
+[G_x][W^n]^T = G
+```
 
-If the mesh is structured, the relationship between indices `i`, `j`, and `k` can be used to efficiently map between the 1D and 2D representations of the mesh points, helping to simplify the implementation of the B-spline DQ method for two-dimensional problems. For example, when `i` changes from 1 to `N` and `j` changes from 1 to `M`, the index `k` changes from 1 to `NM = N × M`.
+where $`[W^n]^T`$ is the transpose of the weighting coefficient matrix $W^n$, and:
 
-### Localized Approximation with B-Splines:
-
-Because **B-splines** are piecewise polynomials with **local support**, the DQ approximation using B-splines only involves **neighboring points** within the support of each B-spline basis function. This leads to **sparse differentiation matrices**, which are computationally efficient for large-scale problems. The B-spline DQ method, therefore, achieves the same basic idea of derivative approximation as conventional DQ but does so more efficiently by restricting the influence to local regions.
-
-### Comparison with Traditional DQ and Finite Differences:
-
-The Differential Quadrature (DQ) method approximates the spatial partial derivatives in the PDE by a sum of weights multiplied by the function values at discrete knots over the domain `[a, b]`. For instance, the first and second-order partial derivatives with respect to `x` over domain `[a, b]` are defined as:
-
-
+With the known matrices $[G]$ and $[G_x]$, the weighting coefficient matrix $[W^n]$ can be obtained by using a direct method like LU decomposition. 
+The weighting coefficient matrix of the y-derivative can be obtained in a similar manner. 
+Using these weighting coefficients, we can discretize the spatial derivatives and transform the governing equations into a system of algebraic equations, which can be solved by iterative or direct methods.
 
 
 
@@ -195,13 +224,13 @@ The Differential Quadrature (DQ) method approximates the spatial partial derivat
 > The differential quadrature method is applied which leads to a set of DQ algebraic equations as follows:
 > 
 > ```math
-> \sum_{k=1}^{N} W^{(2)}_{i,k} Z_{k,j} + \sum_{k=1}^{M} W^{(2)}_{j,k} Z_{i,k} = f(x, y)
+> \sum_{k=1}^{N} W^{(2)}_{i,k} u_{k,j} + \sum_{k=1}^{M} W^{(2)}_{j,k} u_{i,k} = f(x, y)
 > ```
 > 
 > which can be rewritten as:
 > 
 > ```math
-> \sum_{k=2}^{N-1} W^{(2)}_{i,k} Z_{k,j} + \sum_{k=2}^{M-1} W^{(2)}_{j,k} Z_{i,k} = f(x_i, y_j) - W_{i,1} Z_{1,j} - W_{i,N} Z_{N,j} - W_{j,1} Z_{i,1} - W_{j,M} Z_{i,M}
+> \sum_{k=2}^{N-1} W^{(2)}_{i,k} U_{k,j} + \sum_{k=2}^{M-1} W^{(2)}_{j,k} U_{i,k} = f(x_i, y_j) - W_{i,1} U_{1,j} - W_{i,N} u_{N,j} - W_{j,1} U_{i,1} - W_{j,M} U_{i,M}
 > ```
 > 
 > And then solved for. 
