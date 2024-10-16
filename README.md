@@ -25,7 +25,7 @@ Both these cases solves the potential for an example source term `sin(pi * x) * 
 
 <img src="Figures/grid_DQ.PNG" alt="Comparison" width="300"/>
 
-## DQ- method and comparison finite difference
+### DQ- method and comparison finite difference
 
 As shown in above Figure, the DQ approximates the derivative
 of a function with respect to `x` at a mesh point $`x_i, y_j`$ (represented by the dark circle) by
@@ -45,15 +45,109 @@ where $`N`$ and $`M`$ are, respectively, the number of mesh points in the $`x`$ 
 The statement that the **Differential Quadrature (DQ) method** can obtain "very accurate results by using a considerably small number of mesh points" is based on the global nature of the method, which allows it to approximate derivatives using all available data points, unlike local methods such as finite difference or finite element methods. Here’s why:
 
 ### 1. Global Nature of DQ Method:
-- **Global Method**: The DQ method is global because, for the approximation of a derivative at any given point, it uses the functional values at all mesh points in the domain, rather than just the values at nearby or adjacent points (which is common in local methods like finite difference).
-- In the DQ method, each point is influenced by every other point in the mesh. This means that every point in the grid is involved in every derivative calculation, which can lead to very accurate solutions, even with fewer grid points, because the global influence provides a more comprehensive approximation.
+- **Global Method**: The DQ method is global because, for the approximation of a derivative at any given point, it uses the functional values at **all mesh points** in the domain, rather than just the values at nearby or adjacent points (which is common in local methods like finite difference).
+- In the DQ method, each point is influenced by every other point in the mesh. This means that **every point in the grid** is involved in every derivative calculation, which can lead to very accurate solutions, even with fewer grid points, because the global influence provides a more comprehensive approximation.
+
+### 2. Comparison Between DQ and Finite Difference (FD) Methods:
+- **Derivative Approximation**:
+  - **DQ**: Approximates the derivative using the **entire set of functional values** across all mesh points.
+  - **FD**: Approximates the derivative locally, using a **small stencil** (e.g., 2 or 3 neighboring points) to estimate the derivative at a point.
+  
+- **Accuracy**:
+  - **DQ**: Provides **high-order accuracy** due to the use of global information, which means that fewer points can produce accurate results.
+  - **FD**: The accuracy depends on the **order of the stencil** used (e.g., a 2-point stencil gives second-order accuracy). To achieve higher accuracy, the method requires **more mesh points** or higher-order stencils.
+  
+- **Mesh Requirements**:
+  - **DQ**: Since DQ uses global information, it can achieve high accuracy with **fewer mesh points**. This is particularly useful for problems where generating fine meshes is costly or impractical.
+  - **FD**: Typically requires **finer meshes** (more mesh points) to achieve the same level of accuracy as DQ, especially for smooth solutions over large domains.
+
+- **Computational Complexity**:
+  - **DQ**: Due to the global nature of DQ, the resulting system of equations can become **dense**, which increases the computational cost, especially for large domains. However, fewer mesh points are needed, which partially compensates for this.
+  - **FD**: The system of equations in FD is **sparse** (because each point only interacts with its neighbors), making it computationally efficient for large-scale problems with many mesh points.
+
+### Summary of Key Differences:
+
+| Feature              | Differential Quadrature (DQ)                    | Finite Difference (FD)                     |
+|----------------------|-------------------------------------------------|--------------------------------------------|
+| **Derivative Approx.**| Global (all mesh points)                       | Local (small stencil)                      |
+| **Accuracy**          | High-order, fewer mesh points required         | Lower-order, more mesh points needed       |
+| **Mesh Size**         | Coarser mesh can yield accurate results        | Requires finer mesh for similar accuracy   |
+| **Computational Cost**| Higher due to dense systems                    | Lower due to sparse systems                |
+| **Best for**          | Smooth problems requiring global accuracy      | Problems with sharp gradients or complex geometries |
 
 
-## DQ-Spline method and comparison finite element
+
+
+### DQ-Spline method and comparison finite element
 
 As shown by Shu (2000), $`w_i^{(n)}`$ depends on the approximation of the one-dimensional function $`f(x_j, y)`$ (with $`x`$ as the variable), while $`w_j^{(m)}`$ depends on the approximation of the one-dimensional function $`f(x, y_i)`$ (with $`y`$ as the variable).
 
-When $`f(x_j, y)`$ or $`f(x, y_i)`$ is approximated by a high-order polynomial, Shu and Richards (1992) derived a simple algebraic formulation and a recurrence relationship to compute $`w_i^{(n)}`$ and $`w_j^{(m)}`$. When the function is approximated by a Fourier series expansion, Shu and Chew (1997) also derived simple algebraic formulations to compute the weighting coefficients of the first and second-order derivatives.
+When $`f(x_j, y)`$ or $`f(x, y_i)`$ is approximated by a high-order polynomial, Shu and Richards (1992) derived a simple algebraic formulation and a recurrence relationship to compute $`w_i^{(n)}`$ and $`w_j^{(m)}`$. 
+When the function is approximated by a Fourier series expansion, Shu and Chew (1997) also derived simple algebraic formulations to compute the weighting coefficients of the first and second-order derivatives.
+
+In the following, we will show that the weighting coefficients in equation (3.7) can be
+determined by the function approximation of RBFs and the analysis of a linear vector
+space. 
+The MQ RBFs are used as basis functions to determine the weighting coefficients in the
+DQ approximation of derivatives for a two-dimensional problem.
+
+The basic idea behind the **Differential Quadrature (DQ) method** is that any derivative can be approximated by a **linear weighted sum of functional values** at selected mesh points. When using **B-splines** for DQ, we retain this concept but modify the choice of functional values by leveraging the **local support** property of B-splines. In contrast to the conventional DQ approximation, which involves all mesh points in the domain, the B-spline DQ method only uses **neighboring points** affected by the B-spline basis functions. This ensures a more localized influence on the derivative computation.
+
+
+This relationship helps in indexing the mesh points more efficiently when constructing the differentiation matrices for B-splines.
+
+### Derivative Approximation with B-Splines:
+
+For B-splines, the approximation of the **m-th order derivative** with respect to `x` and the **n-th order derivative** with respect to `y` at a mesh point `(x_k, y_k)` is computed using the local support of the B-splines. 
+Since B-splines only influence a small number of nearby points, the sum in the DQ approximation is restricted to the points within the **local support region**. The derivaties will have 0 value outside the neighboruing points. FOr ahigher degree of th espline there will be more poitns thta influence. 
+So depending on the order of your splines you can choose how many bumber fo poitns that will be influenced. 
+
+The **m-th order derivative** with respect to `x` using B-splines is approximated as:
+> ```math
+> f_x^{(m)}(x_k, y_k) = \sum_{i=1}^{M_{\text{local}} \times N_{\text{local}}} w_i^{(m)} f(x, y_i)
+> ```
+Similarly, the **n-th order derivative** with respect to `y` using B-splines is approximated as:
+
+> ```math
+> f_y^{(n)}(x_k, y_k) = \sum_{i=1}^{M_{\text{local}} \times N_{\text{local}}} w_i^{(n)} f(x_i, y)
+> ```
+
+Here, `M* N` represents the number of mesh points, but only a few wll be affected by the B-spline in both the `x` and `y` directions, respectively. These points are determined by the **degree of the B-spline**, which defines the width of the support region.
+> ```math
+> U_x(x_i) = \sum_{j=1}^{N} W_{i,j}^{(1)} U(x_j), \quad \text{for } i = 1, \dots, N
+> ```
+
+> ```math
+> U_{xx}(x_i) = \sum_{j=1}^{N} W_{i,j}^{(2)} U(x_j), \quad \text{for } i = 1, \dots, N
+> ```
+
+
+where `W^(1)_i,j` and `W^(2)_i,j` are the weighting coefficients of the first and second-order partial derivatives, respectively.
+
+In this project, we use the **modified cubic-B-spline method** along with **Shu's method** for obtaining the weighting coefficients. In particular, we define the B-spline basis functions `ψ_k(x_i)` and its derivatives in the following relation:
+> ```math
+> \psi'_k(x_i) = \sum_{j=1}^{N} W_{i,j}^{(1)} \psi_k(x_j), \quad \text{for } i = 1, 2, \dots, N; \, k = 1, 2, \dots, N
+> ```
+
+
+To get the weighting coefficients, we follow the DQ method for deriving the appropriate sparse matrices for second derivatives, ensuring a computationally efficient implementation.
+
+
+
+### Structured Grid Example:
+
+If the mesh is structured, the relationship between indices `i`, `j`, and `k` can be used to efficiently map between the 1D and 2D representations of the mesh points, helping to simplify the implementation of the B-spline DQ method for two-dimensional problems. For example, when `i` changes from 1 to `N` and `j` changes from 1 to `M`, the index `k` changes from 1 to `NM = N × M`.
+
+### Localized Approximation with B-Splines:
+
+Because **B-splines** are piecewise polynomials with **local support**, the DQ approximation using B-splines only involves **neighboring points** within the support of each B-spline basis function. This leads to **sparse differentiation matrices**, which are computationally efficient for large-scale problems. The B-spline DQ method, therefore, achieves the same basic idea of derivative approximation as conventional DQ but does so more efficiently by restricting the influence to local regions.
+
+### Comparison with Traditional DQ and Finite Differences:
+
+The Differential Quadrature (DQ) method approximates the spatial partial derivatives in the PDE by a sum of weights multiplied by the function values at discrete knots over the domain `[a, b]`. For instance, the first and second-order partial derivatives with respect to `x` over domain `[a, b]` are defined as:
+
+
+
 
 
 > ### Some info about the DQ code 
