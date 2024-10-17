@@ -32,6 +32,7 @@ of a function with respect to `x` at a mesh point $`x_i, y_j`$ (represented by t
 all the functional values along the mesh line of $`y = y_j`$  (represented by the white circle),
 and the derivative of the function with respect to `y` by all the functional values along the
 mesh line of  $`x = x_i`$ (represented by the white square).
+That is, by the differential quadrature method, we approximate the spatial derivatives of unknown function at any grid points using weighted sum of all the functional values at certain points in the whole computational domain.
 
 Mathematically, the DQ approximation of the $`n`$-th order derivative with respect to $`x`$, $`f_x^{(n)}`$, and the $`m`$-th order derivative with respect to $`y`$, $`f_y^{(m)}`$, at $`(x_i, y_j)`$ can be written as:
 
@@ -39,13 +40,11 @@ $`f_x^{(n)}(x_i, y_j) = \sum_{k=1}^{N} w_i^{(n)}(x_k, y_j) f(x_k, y_j)`$
 $`f_y^{(m)}(x_i, y_j) = \sum_{k=1}^{M} w_j^{(m)}(x_i, y_k) f(x_i, y_k)`$  
 
 where $`N`$ and $`M`$ are, respectively, the number of mesh points in the $`x`$ and $`y`$ directions, $`w_i^{(n)}`$ and $`w_j^{(m)}`$ are the DQ weighting coefficients in the $`x`$ and $`y`$ directions.
+For second derivative n = m = 2 we combine the derivative matrices in both directions using the Kronecker product to form the Laplacian matrix:
 
-For second derivative n=m=2 we combine the derivative matrices in both directions using the Kronecker product to form the Laplacian matrix:
-
-\[
-\text{Laplacian} = I \otimes D_x^2 + D_y^2 \otimes I
-\]
-
+```math
+\nabla^2 = I_y \otimes D_x^2 + D_y^2 \otimes I_x
+ ```
 where \(I\) is the identity matrix and \(\otimes\) denotes the Kronecker product.
 
 ### Imposing Boundary Conditions
