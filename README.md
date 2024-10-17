@@ -27,6 +27,25 @@ Both these cases solves the potential for an example source term `sin(pi * x) * 
 
 ### DQ- method and comparison finite difference
 
+## Finite difference
+1D Boundary Value Problem: Dirichlet Boundary Conditions
+
+Consider solving the 1D Poisson’s equation with homogeneous Dirichlet boundary conditions:
+
+```math
+\begin{aligned}
+-u''(x) &= f(x), \quad x \in (0, 1), \\
+u(0) &= 0, \quad u(1) = 0.
+\end{aligned}
+```
+
+After approximating  $`d^2/dx^2`$ by the finite difference operator $`D^2`$, we obtain the finite difference scheme:
+
+```math
+-D^2 u_j = \frac{-u_{j-1} + 2u_j - u_{j+1}}{h^2} = f_j,  j = 1, 2, \dots, n.
+```
+
+## DQ- method
 As shown in above Figure, the DQ approximates the derivative
 of a function with respect to `x` at a mesh point $`x_i, y_j`$ (represented by the dark circle) by
 all the functional values along the mesh line of $`y = y_j`$  (represented by the white circle),
@@ -43,38 +62,40 @@ where $`N`$ and $`M`$ are, respectively, the number of mesh points in the $`x`$ 
 For second derivative n = m = 2 we combine the derivative matrices in both directions using the Kronecker product to form the Laplacian matrix:
 
 ```math
-\nabla^2 = I_y \otimes D_x^2 + D_y^2 \otimes I_x
+\nabla^2 = I_y \otimes f_x^2 + f_y^2 \otimes I_x
  ```
-where \(I\) is the identity matrix and \(\otimes\) denotes the Kronecker product.
+where \(I\) is the identity matrix and $`\otimes`$  denotes the Kronecker product.
 
 ### Imposing Boundary Conditions
 
 To enforce Dirichlet boundary conditions (i.e., \(u = 0\) on the boundary), we modify the Laplacian matrix and the source term \(f(x, y)\). Specifically, we set the rows of the Laplacian matrix corresponding to boundary points to enforce the boundary condition:
 
 ```math
-\text{Laplacian}[i, :] = 0 \quad \text{for all boundary indices} \, i
-
-\text{Laplacian}[i, i] = 1
-
+\nabla^2 [i, :] = 0 \quad \text{for all boundary indices} \, i
+ ```
+```math
+\nabla^2 [i, i] = 1
+ ```
+```math
 f[i] = 0
  ```
 
-This ensures that the solution \(u(x, y)\) is zero at the boundary points.
+This ensures that the solution $`u(x, y)`$ is zero at the boundary points.
 
 ### Solving the System of Equations
 
 Once the Laplacian matrix is constructed and the boundary conditions are applied, we solve the system of linear equations:
 
-\[
-\text{Laplacian} \cdot U = f
-\]
+```math
+\nabla^2\cdot U = f
+ ```
 
-where \(U\) is the vector of unknowns (the values of \(u(x, y)\) at the grid points), and \(f\) is the source term of the PDE (in this case, the right-hand side of the Poisson equation).
+where $`U`$ is the vector of unknowns (the values of $`u(x, y)`$ at the grid points), and $`f`$  is the source term of the PDE.
 
 The system is solved using standard linear algebra techniques, such as LU decomposition or sparse solvers, since the Laplacian matrix is often sparse.
 
 
-The statement that the **Differential Quadrature (DQ) method** can obtain "very accurate results by using a considerably small number of mesh points" is based on the global nature of the method, which allows it to approximate derivatives using all available data points, unlike local methods such as finite difference or finite element methods. Here’s why:
+**Differential Quadrature (DQ) method** has a global nature, which allows it to approximate derivatives using all available data points, unlike local methods such as finite difference or finite element methods. 
 
 ### 1. Global Nature of DQ Method:
 - **Global Method**: The DQ method is global because, for the approximation of a derivative at any given point, it uses the functional values at **all mesh points** in the domain, rather than just the values at nearby or adjacent points (which is common in local methods like finite difference).
@@ -117,11 +138,6 @@ As shown by Shu (2000), $`w_i^{(n)}`$ depends on the approximation of the one-di
 When $`f(x_j, y)`$ or $`f(x, y_i)`$ is approximated by a high-order polynomial, Shu and Richards (1992) derived a simple algebraic formulation and a recurrence relationship to compute $`w_i^{(n)}`$ and $`w_j^{(m)}`$. 
 When the function is approximated by a Fourier series expansion, Shu and Chew (1997) also derived simple algebraic formulations to compute the weighting coefficients of the first and second-order derivatives.
 
-In the following, we will show that the weighting coefficients in equation (3.7) can be
-determined by the function approximation of RBFs and the analysis of a linear vector
-space. 
-The MQ RBFs are used as basis functions to determine the weighting coefficients in the
-DQ approximation of derivatives for a two-dimensional problem.
 
 The basic idea behind the **Differential Quadrature (DQ) method** is that any derivative can be approximated by a **linear weighted sum of functional values** at selected mesh points. When using **B-splines** for DQ, we retain this concept but modify the choice of functional values by leveraging the **local support** property of B-splines. In contrast to the conventional DQ approximation, which involves all mesh points in the domain, the B-spline DQ method only uses **neighboring points** affected by the B-spline basis functions. This ensures a more localized influence on the derivative computation.
 
@@ -141,7 +157,7 @@ The **m-th order derivative** with respect to `x` using B-splines is approximate
 Similarly, the **n-th order derivative** with respect to `y` using B-splines is approximated as:
 
 > ```math
-> f_y^{(n)}(x_k, y_k) = \sum_{i=1}^{M_{\text{local}} \times N_{\text{local}}} w_i^{(n)} f(x_i, y)
+> f_y^{(n)}(x_k, y_k) = \sum_{i=1}^{M \times N} w_i^{(n)} f(x_i, y)
 > ```
 
 Here, `M* N` represents the number of mesh points, but only a few wll be affected by the B-spline in both the `x` and `y` directions, respectively. These points are determined by the **degree of the B-spline**, which defines the width of the support region.
@@ -167,12 +183,12 @@ To get the weighting coefficients, we follow the DQ method for deriving the appr
 In the matrix form, the weighting coefficient matrix of the x-derivative can then be determined by:
 
 ```math
-[G_x][W^n]^T = G
+[U_x][W^n]^T = f
 ```
 
 where $`[W^n]^T`$ is the transpose of the weighting coefficient matrix $W^n$, and:
 
-With the known matrices $[G]$ and $[G_x]$, the weighting coefficient matrix $[W^n]$ can be obtained by using a direct method like LU decomposition. 
+With the known matrices $[f]$ and $[U_x]$, the weighting coefficient matrix $[W^n]$ can be obtained by using a direct method like LU decomposition. 
 The weighting coefficient matrix of the y-derivative can be obtained in a similar manner. 
 Using these weighting coefficients, we can discretize the spatial derivatives and transform the governing equations into a system of algebraic equations, which can be solved by iterative or direct methods.
 
