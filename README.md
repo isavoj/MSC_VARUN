@@ -61,6 +61,8 @@ plt.imshow(Y_train[0])
 plt.colorbar()
 
 plt.show()
+```
+
 📄 License
 This dataset is shared under the MIT License.
 
