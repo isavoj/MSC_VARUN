@@ -1,3 +1,4 @@
+OBS think about how to explain the comments
 # 🧾 Dataset: Synthetic Poisson Equation Data
 
 This dataset contains synthetic 2D charge distributions and their corresponding potential solutions computed using FFT, designed for training and evaluating physics-informed neural operators such as the Fourier Neural Operator (FNO) and Kolmogorov-Arnold Networks (KAN).
