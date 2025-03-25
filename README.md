@@ -1,3 +1,87 @@
+# 🧾 Dataset: Synthetic Poisson Equation Data
+
+This dataset contains synthetic 2D charge distributions and their corresponding potential solutions computed using FFT, designed for training and evaluating physics-informed neural operators such as the Fourier Neural Operator (FNO) and Kolmogorov-Arnold Networks (KAN).
+
+---
+
+## 📁 Contents
+data/
+├── train_input.npy # Charge distributions (10000 samples)
+├── train_output.npy # Corresponding potential solutions (10000 samples) 
+├── test_input.npy # Charge distributions (2000 samples)
+├── test_output.npy # Corresponding potentials (2000 samples) 
+├── grid.npy # Coordinate grid used (shape: Nx x Ny x 2)
+
+---
+
+File Relationships
+train_input.npy ↔ train_output.npy: These are paired. Each train_input[i] corresponds to the solution train_output[i].
+test_input.npy ↔ test_output.npy: Same structure as training.
+grid.npy: Common spatial grid (shared across all samples).
+boundary_mask.npy: Optional – if present, this file contains binary masks for Dirichlet boundary conditions and applies to all inputs.
+metadata.json: Contains generation parameters (e.g., number of particles, FFT kernel size, normalization constants).
+
+## ⚙️ Data Generation
+
+- **Method:** Solved the Poisson equation ∇²φ = -ρ using FFT-based Green's function solver.
+- **Grid size:** 128×128
+- **Number of samples:** 10000 training, 2000 testing
+- **Charge distributions:** Random Gaussian blobs with varying width, amplitude, and position.
+
+---
+
+## 🧪 How to Use
+
+```python
+import numpy as np
+
+X_train = np.load("train_input.npy")
+Y_train = np.load("train_output.npy")
+grid = np.load("grid.npy")
+
+# X_train: shape (10000, 128, 128)
+# Y_train: shape (10000, 128, 128)
+🔧 Requirements
+Python 3.8+
+NumPy
+Matplotlib (optional, for visualization)
+📊 Example Plot
+python
+Copy code
+import matplotlib.pyplot as plt
+
+plt.subplot(1, 2, 1)
+plt.title("Charge")
+plt.imshow(X_train[0])
+plt.colorbar()
+
+plt.subplot(1, 2, 2)
+plt.title("Potential")
+plt.imshow(Y_train[0])
+plt.colorbar()
+
+plt.show()
+📄 License
+This dataset is shared under the MIT License.
+
+✏️ Citation
+If you use this dataset in a publication, please cite:
+
+java
+Copy code
+@misc{yourname2025poissondata,
+  author       = {Your Name},
+  title        = {Synthetic Poisson Equation Data for Operator Learning},
+  year         = 2025,
+  howpublished = {GitHub repository},
+  url          = {https://github.com/yourname/poisson-dataset}
+}
+yaml
+Copy code
+
+---
+
+
 # MSC_VARUN
 ---
 
